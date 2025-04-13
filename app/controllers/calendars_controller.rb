@@ -26,15 +26,17 @@ class CalendarsController < ApplicationController
     # 例)　今日が2月1日の場合・・・ Date.today.day => 1日
 
     @week_days = []
-
+   
     plans = Plan.where(date: @todays_date..@todays_date + 6)
+
+    @day_of_week = Date.today.wday
 
     7.times do |x|
       today_plans = []
       plans.each do |plan|
         today_plans.push(plan.plan) if plan.date == @todays_date + x
       end
-      days = { month: (@todays_date + x).month, date: (@todays_date+x).day, plans: today_plans}
+      days = { month: (@todays_date + x).month, date: (@todays_date + x).day, plans: today_plans, wdays: wdays[(@day_of_week + x) % 7]}
       @week_days.push(days)
     end
 
